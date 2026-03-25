@@ -601,58 +601,89 @@ footer{
     <div class="section-label">Simple Pricing</div>
     <h2 class="section-title">One Price. Both Apps. Zero Surprises.</h2>
     <p class="section-sub" style="margin:0 auto;">Your subscription covers both the Livestock and Poultry apps. Start with a 45-day free trial — no credit card required.</p>
+
+    <!-- Region Selector -->
+    <div style="margin:32px auto 0;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--cream-dark);border-radius:10px;padding:8px 16px;">
+        <span id="region-flag" style="font-size:20px;">🌍</span>
+        <select id="region-select" onchange="setRegion(this.value)" style="border:none;outline:none;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;color:var(--text-dark);background:transparent;cursor:pointer;padding-right:8px;">
+          <option value="SA">🇿🇦 South Africa</option>
+          <option value="AU">🇦🇺 Australia</option>
+          <option value="NZ">🇳🇿 New Zealand</option>
+          <option value="GB">🇬🇧 United Kingdom</option>
+          <option value="US">🇺🇸 United States</option>
+          <option value="AF">🌍 Rest of Africa</option>
+          <option value="OTHER">🌐 Other</option>
+        </select>
+      </div>
+      <div id="region-badge" style="display:none;background:var(--green-accent);color:white;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;">
+        📍 Auto-detected your region
+      </div>
+    </div>
+    <div id="intl-note" style="display:none;margin-top:10px;font-size:12px;color:var(--text-muted);">
+      International prices shown in your local currency · Billed in ZAR · Reviewed quarterly
+    </div>
   </div>
-  <div class="pricing-grid">
+
+  <div class="pricing-grid" style="margin-top:40px;">
+    <!-- STARTER -->
     <div class="pricing-card">
       <div class="pricing-plan">Starter</div>
       <div class="pricing-price">
-        <div class="pricing-currency">R</div>
-        <div class="pricing-amount">149</div>
+        <div class="pricing-currency" id="curr-starter"></div>
+        <div class="pricing-amount" id="amt-starter"></div>
         <div class="pricing-period">/month</div>
       </div>
-      <div class="pricing-desc">Perfect for small farms getting started with digital record keeping.</div>
+      <div id="zar-starter" style="font-size:11px;color:var(--text-muted);margin-top:-8px;margin-bottom:12px;display:none;"></div>
+      <div class="pricing-desc">For small farms starting with digital records. Livestock app only.</div>
       <ul class="pricing-features">
-        <li>Up to 100 animals</li>
-        <li>2 workers</li>
-        <li>Both Livestock & Poultry apps</li>
-        <li>GPS worker tracking</li>
-        <li>PDF reports</li>
-        <li>FMD compliance tools</li>
+        <li>Up to 50 animals</li>
+        <li>1 worker (no GPS)</li>
+        <li>Livestock app</li>
+        <li>FMD compliance log</li>
+        <li>Basic PDF reports</li>
+        <li>45-day free trial</li>
       </ul>
       <a href="https://farm-dairy-ten.vercel.app" class="btn-pricing">Start Free Trial</a>
     </div>
+
+    <!-- PRO -->
     <div class="pricing-card featured">
       <div class="pricing-badge">Most Popular</div>
       <div class="pricing-plan">Pro</div>
       <div class="pricing-price">
-        <div class="pricing-currency">R</div>
-        <div class="pricing-amount">299</div>
+        <div class="pricing-currency" id="curr-pro"></div>
+        <div class="pricing-amount" id="amt-pro"></div>
         <div class="pricing-period">/month</div>
       </div>
-      <div class="pricing-desc">For growing commercial farms that need more capacity and features.</div>
+      <div id="zar-pro" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:-8px;margin-bottom:12px;display:none;"></div>
+      <div class="pricing-desc">For growing commercial farms that need full capability.</div>
       <ul class="pricing-features">
         <li>Up to 500 animals</li>
-        <li>5 workers</li>
+        <li>5 workers + GPS tracking</li>
         <li>Both Livestock & Poultry apps</li>
-        <li>GPS tracking + full history</li>
         <li>FMD certificates & compliance</li>
+        <li>Full PDF reports</li>
         <li>Priority support</li>
       </ul>
       <a href="https://farm-dairy-ten.vercel.app" class="btn-pricing">Start Free Trial</a>
     </div>
+
+    <!-- ENTERPRISE -->
     <div class="pricing-card">
       <div class="pricing-plan">Enterprise</div>
       <div class="pricing-price">
-        <div class="pricing-currency" style="color:var(--green-accent);">R</div>
-        <div class="pricing-amount">599</div>
+        <div class="pricing-currency" id="curr-ent" style="color:var(--green-accent);"></div>
+        <div class="pricing-amount" id="amt-ent"></div>
         <div class="pricing-period">/month</div>
       </div>
-      <div class="pricing-desc">Large commercial operations with unlimited scale and dedicated support.</div>
+      <div id="zar-ent" style="font-size:11px;color:var(--text-muted);margin-top:-8px;margin-bottom:12px;display:none;"></div>
+      <div class="pricing-desc">Large commercial operations with unlimited scale.</div>
       <ul class="pricing-features">
         <li>Unlimited animals</li>
-        <li>Unlimited workers</li>
+        <li>Unlimited workers + GPS</li>
         <li>Both Livestock & Poultry apps</li>
-        <li>Full GPS history</li>
+        <li>FMD certificates & compliance</li>
         <li>Custom PDF branding</li>
         <li>Dedicated account manager</li>
       </ul>
@@ -753,13 +784,80 @@ footer{
 </footer>
 
 <script>
-// Smooth scroll for anchor links
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const t=document.querySelector(a.getAttribute('href'));
     if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
   });
 });
+
+// Pricing data per region
+const PRICING = {
+  SA:    { sym:"R",  starter:"149",  pro:"299",  ent:"599",  zarSt:null, zarPro:null, zarEnt:null, flag:"🇿🇦" },
+  AU:    { sym:"A$", starter:"27",   pro:"44",   ent:"89",   zarSt:"R300", zarPro:"R500", zarEnt:"R1,000", flag:"🇦🇺" },
+  NZ:    { sym:"NZ$",starter:"31",   pro:"51",   ent:"102",  zarSt:"R300", zarPro:"R500", zarEnt:"R1,000", flag:"🇳🇿" },
+  GB:    { sym:"£",  starter:"13",   pro:"22",   ent:"44",   zarSt:"R300", zarPro:"R500", zarEnt:"R1,000", flag:"🇬🇧" },
+  US:    { sym:"$",  starter:"18",   pro:"29",   ent:"59",   zarSt:"R300", zarPro:"R500", zarEnt:"R1,000", flag:"🇺🇸" },
+  AF:    { sym:"$",  starter:"18",   pro:"29",   ent:"59",   zarSt:"R300", zarPro:"R500", zarEnt:"R1,000", flag:"🌍" },
+  OTHER: { sym:"$",  starter:"18",   pro:"29",   ent:"59",   zarSt:"R300", zarPro:"R500", zarEnt:"R1,000", flag:"🌐" },
+};
+
+// Country code → region map
+const COUNTRY_MAP = {
+  ZA:"SA",
+  AU:"AU", AU:"AU",
+  NZ:"NZ",
+  GB:"GB", IE:"GB",
+  US:"US", CA:"US",
+  NG:"AF", KE:"AF", GH:"AF", ZW:"AF", ZM:"AF", TZ:"AF", UG:"AF", RW:"AF", ET:"AF", SN:"AF", CI:"AF", CM:"AF",
+};
+
+function setRegion(code) {
+  const p = PRICING[code] || PRICING.OTHER;
+  // Update currency symbols and amounts
+  ["starter","pro","ent"].forEach((k,i)=>{
+    const amt = [p.starter, p.pro, p.ent][i];
+    const zar = [p.zarSt, p.zarPro, p.zarEnt][i];
+    document.getElementById("curr-"+k).textContent = p.sym;
+    document.getElementById("amt-"+k).textContent = amt;
+    const zarEl = document.getElementById("zar-"+k);
+    if(zar){
+      zarEl.textContent = "(billed as "+zar+" ZAR)";
+      zarEl.style.display="block";
+    } else {
+      zarEl.style.display="none";
+    }
+  });
+  // Update flag
+  document.getElementById("region-flag").textContent = p.flag;
+  // Show/hide intl note
+  document.getElementById("intl-note").style.display = code==="SA" ? "none" : "block";
+  // Update select
+  document.getElementById("region-select").value = code;
+}
+
+// Auto-detect on load
+(async function detectRegion(){
+  try {
+    const r = await fetch("https://ipapi.co/json/");
+    const d = await r.json();
+    const code = d.country_code;
+    const region = COUNTRY_MAP[code] || "OTHER";
+    setRegion(region);
+    // Show auto-detected badge if not SA (SA is default, no need to highlight)
+    if(region !== "SA"){
+      document.getElementById("region-badge").style.display = "inline-block";
+      setTimeout(()=>{ document.getElementById("region-badge").style.display="none"; }, 4000);
+    }
+  } catch(e) {
+    // Default to SA if detection fails
+    setRegion("SA");
+  }
+})();
+
+// Init with SA defaults immediately (before async detection)
+setRegion("SA");
 </script>
 </body>
 </html>
