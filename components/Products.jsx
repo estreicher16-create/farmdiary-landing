@@ -147,17 +147,18 @@ const PRODUCT_DATA = [
     num: "I",
     name: <>Drasil Agri · <em>Livestock</em></>,
     tagline: "Cattle, sheep & goat management for working farmers.",
-    desc: "Drasil Agri Livestock is the herd book in your pocket. Tag every animal, log weights and births, schedule vaccinations and dosing, and track which mother bore which calf. Built offline-first for the kraal — your phone records everything in the field, then syncs the moment you're back in signal.",
+    desc: "Cattle, sheep, goats and game — one app, total livestock visibility. Drasil Agri Livestock is the herd book that lives in your pocket: full animal register with individual profiles, calving records with target dates and production metrics, complete health logs and treatment history, and species selection across cattle, sheep, goats and game. Capture vaccine batch numbers and vet notes, manage permit checklists, and download professional PDF & Excel reports — P&L summaries, FMD compliance certificates, vaccination certs and attendance records — for any data set.",
     bullets: [
-      "Individual animal profiles — ear-tag, breed, weight history, lineage, photos.",
-      "Vaccination & dosing scheduler with reminders and a full medication log.",
-      "Breeding records — pairings, due dates, calving notes, mother–offspring links.",
-      "Sales, purchases and movement tracking, ready for SARS and stock-theft cases.",
-      "Multi-farm and multi-user support for co-ops and family operations.",
-      "Offline-first design — full functionality without a signal, automatic sync when online.",
+      "Full animal register — individual profiles for cattle, sheep, goats and game.",
+      "Calving records with birth tracking, target dates and production metrics.",
+      "Health logs & treatment history — vaccine batch numbers, vet notes, health trends.",
+      "Permit checklists and vaccination certificates, ready when you need them.",
+      "Professional PDF & Excel reports — P&L, FMD compliance, attendance records.",
+      "40-day free tree trial. Available on App Store and Google Play.",
     ],
     hue: 155,
     Mockup: LivestockMockup,
+    image: "assets/drasil-agri-livestock-infographic.png",
     status: "LIVE",
     region: "INTERNATIONAL",
     logo: "assets/drasil-agri-logo.png",
@@ -166,18 +167,19 @@ const PRODUCT_DATA = [
   {
     num: "II",
     name: <>Drasil Agri · <em>Poultry</em></>,
-    tagline: "Layer & broiler management, flock by flock.",
-    desc: "Drasil Agri Poultry is the layer-house and broiler-cycle companion. Track flocks from day-old chick to slaughter, monitor feed conversion, daily egg counts, mortality and house conditions — all on one screen. Designed for commercial growers who need numbers they can trust at the end of every day.",
+    tagline: "Dedicated poultry app for commercial operations.",
+    desc: "A dedicated poultry app, specialised for commercial poultry operations — broilers, layers, breeders and ducks. Drasil Agri Poultry tracks flock life cycles end to end: monitor production metrics like Lay % and FCR, log mortality and feed conversion, record daily egg numbers and calculate Lay % for layers and breeders. Manage movement permits and state-vet certificates, track hatch data and hatchery efficiency, and download professional PDF & Excel reports — P&L summaries, vaccination certificates, FMD compliance certs and attendance records.",
     bullets: [
-      "Flock-level tracking with daily counts, mortality, culls and transfers.",
-      "Egg production logging by house, including grade A / B / cracked breakdowns.",
-      "Feed consumption + FCR (feed conversion ratio) calculated automatically.",
-      "Vaccination programmes for layers and broilers, with calendar reminders.",
-      "House environment notes — temperature, humidity, lighting hours.",
-      "Reports per flock cycle for cost, yield, mortality and profit per bird.",
+      "Dedicated poultry app for commercial operations — broilers, layers, breeders, ducks.",
+      "Flock history & batch data — Lay %, FCR, mortality, feed conversion, performance trends.",
+      "Egg collection & tracking — daily numbers and automatic Lay % per house.",
+      "Permit checklists, hatch data and hatchery efficiency in one place.",
+      "Professional PDF & Excel reports — P&L, vaccination certs, FMD compliance, attendance.",
+      "One app. Total poultry visibility — 40 day free trial ",
     ],
     hue: 60,
     Mockup: PoultryMockup,
+    image: "assets/drasil-agri-poultry-infographic.png",
     status: "LIVE",
     region: "INTERNATIONAL",
     logo: "assets/drasil-agri-logo.png",
@@ -277,9 +279,13 @@ function ProductBlock({ p, idx }) {
         )}
       </div>
       <div className="pb-visual" style={{ gridArea: "visual" }}>
-        <div className="product-mockup" style={{ aspectRatio: "400/260" }}>
-          <M />
-        </div>
+        {p.image ? (
+          <img src={p.image} alt={p.name?.props?.children?.toString?.() || ""} style={{ width: "100%", height: "auto", borderRadius: 12, border: "1px solid var(--border-soft)", boxShadow: "0 30px 80px oklch(0.05 0.02 260 / 0.5)" }} />
+        ) : (
+          <div className="product-mockup" style={{ aspectRatio: "400/260" }}>
+            <M />
+          </div>
+        )}
       </div>
     </article>
   );

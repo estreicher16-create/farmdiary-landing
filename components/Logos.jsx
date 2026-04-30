@@ -6,7 +6,6 @@ const LOGOS = [
   "Kasi Kitchen",
   "Harambee",
   "Cape Poultry",
-  "Du Plessis Farms",
 ];
 
 function Logos() {

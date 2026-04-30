@@ -2,7 +2,7 @@ const HERO_COPY = {
   mythic: {
     eyebrow: "A NEW STAR · EST. 2026",
     h1: <>Software, <em>rooted deep</em>,<br />growing <span className="sap">bright</span>.</>,
-    lede: "Drasil Nova is a South African app studio building a small constellation of SaaS apps. Each one stands on its own — its own sign-in, its own price, its own purpose. Two reach the world; two solve South African problems."
+    lede: "Drasil Nova is a South African app studio building a small constellation of SaaS apps. Each one stands on its own  its own sign-in, its own price, its own purpose. Two reach the world; to solve South African problems."
   },
   direct: {
     eyebrow: "DRASIL NOVA · SA APP STUDIO",
